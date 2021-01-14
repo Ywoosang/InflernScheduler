@@ -1,0 +1,16 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}InflearnScheduler > 결과{% endblock%}
+{% block content %}
+ 
+{{ title }}
+{% for section in sections %}
+<ul>
+    <li>{{ section['name'] }}</li>
+    {% for content in section['contents'] %}
+    <li>{{ content['name']}}  : {{ content['time']}}</li>
+    {% endfor %} 
+</ul>
+{% endfor %}
+{% endblock %}
+
+ 
