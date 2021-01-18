@@ -1,0 +1,44 @@
+.search{
+    height: 25vh; 
+}
+.hidden{
+    display :none; 
+}
+.guide-img-wrapper .guide-img{
+    width: 500px;
+    height: 400px; 
+    object-fit:contain; 
+}
+.des{
+   display :flex;
+   justify-content: center;
+}
+.des-container{
+    color: #8b8b8b;
+    border-radius: 6px ;
+    overflow: hidden; 
+    background-color: white; 
+    box-shadow: 1px 1px 3px #ddd;
+}
+.des-container h4{
+    margin : 10px ; 
+    position: relative; 
+     
+}
+.des-container h4 a{
+    right:0; 
+    font-weight: bold; 
+    color :black !important;  
+    position: absolute; 
+    font-size: 15px;
+}
+.des-img-contain{
+    width: inherit;
+    height: inherit;
+}
+.des-img{
+    width : inherit;
+    height: inherit; 
+    object-fit: contain; 
+   
+}
