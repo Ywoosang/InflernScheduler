@@ -4,12 +4,6 @@ function $(selector: string): el {
   return document.querySelector(selector);
 }
 
-// const mainContents: el = $('.main');
-// const errorModal: el = $('.server-modal');
-// const closeButton: el = $('.close-btn');
-// const closeIcon: el = $('btn-close');
-
-// const body: el = $('body');
 function makeResponse(url: string) {
   const requrl = `/crawldata`;
   const data = {
@@ -61,7 +55,6 @@ function createDom(res: ServerResponse): void {
   const alignSection2: el = $('.as-2');
   const alignSection3: el = $('.as-3');
   const main: el = $('.main');
-  console.log(main);
   let sectionNumber = 0;
   const sections: Section[] = res.sections;
   for (const section of sections) {
@@ -85,7 +78,11 @@ function createDom(res: ServerResponse): void {
     }
     const sectionNameTag = document.createElement('li');
     sectionNameTag.classList.add('title');
-    const sectionName = `<i class="fa fa-list-alt"></i> ${section.name} <a class="total-content-select">${totalContentTime}분</a>`;
+    const sectionName = `<i class="fa fa-list-alt"></i> 섹션 ${
+      sectionNumber + 1
+    }: ${
+      section.name
+    } <a class="total-content-select">${totalContentTime}분</a>`;
     sectionNameTag.innerHTML = sectionName;
     sectionWrapper.prepend(sectionNameTag);
     const selectAlignSection: number = sectionNumber % 3;
@@ -121,24 +118,30 @@ const subInput = $('.sub-input') as HTMLInputElement;
 const addButton = $('.add-btn') as HTMLButtonElement;
 const subButton = $('.sub-btn') as HTMLButtonElement;
 function setEvent() {
-  const contents: any = document.getElementsByTagName('li');
-  console.log(contents);
+  const contents: any = document.getElementsByClassName('content');
+  const sectionTitles: any = document.getElementsByClassName('title');
   addButton.addEventListener('click', addAddedStudyTime);
   subButton.addEventListener('click', subAddedStudyTime);
-
   for (const content of contents as el[]) {
-    content.addEventListener('click', calcStudyTime);
+    content.addEventListener('click', toggleStudyTime);
+  }
+  for (const sectionTitle of sectionTitles) {
+    sectionTitle.addEventListener('click', sectionDoneToggle);
   }
 }
-const pre = 0;
 
-function changeSpeed() {
-  const selectedSpeed = $('.form-select') as HTMLSelectElement;
-  const optionIndex = selectedSpeed.options.selectedIndex;
-  const speed = selectedSpeed.options[optionIndex].value;
-  lectureStudyTime.innerText = parseInt(
-    (Number(lectureStudyTime.innerText) / Number(speed)).toString()
-  ).toString();
+function sectionDoneToggle() {
+  console.log(this);
+  this.classList.toggle('section-done');
+  this.parentNode.querySelectorAll('.content').forEach((element: any) => {
+    element.classList.add('done');
+  });
+  if (this.classList.contains('section-done')) {
+    this.parentNode.querySelectorAll('.content').forEach((element: any) => {
+      element.classList.remove('done');
+    });
+  }
+  calcLectureStudyTime();
 }
 
 function addAddedStudyTime() {
@@ -147,6 +150,7 @@ function addAddedStudyTime() {
     addedStudyTime.innerText = (
       Number(addedStudyTime.innerText) + Number(addInput.value)
     ).toString();
+    addInput.value = '';
     calcTotal();
   }
 }
@@ -157,36 +161,56 @@ function subAddedStudyTime() {
     const calcResult =
       Number(addedStudyTime.innerText) - Number(subInput.value);
     addedStudyTime.innerText = calcResult > 0 ? calcResult.toString() : '0';
+    subInput.value = '';
     calcTotal();
   }
 }
+let lecTime = 0;
 
-function calcStudyTime(e: Event) {
+/*
+강의가 추가또는 삭제 될 경우 전체 시간을 계산
+*/
+function toggleStudyTime(e: Event): void {
   const target = e.target as HTMLElement;
   console.log(e.target);
-  const content = target.parentNode.querySelector(
-    '.lecture-time'
-  ) as HTMLElement;
-  const liTag = target.parentNode as el;
+  const liTag = target as el;
   console.log(liTag);
-  // console.log(content);
-  const contentTime = Number(content.innerText.replace('분', ''));
-  if (liTag.classList.contains('done')) {
-    liTag.classList.remove('done');
-    lectureStudyTime.innerText = (
-      Number(lectureStudyTime.innerText) - contentTime
-    ).toString();
-  } else {
-    liTag.classList.add('done');
-    lectureStudyTime.innerText = (
-      Number(lectureStudyTime.innerText) + contentTime
-    ).toString();
-  }
+  liTag.classList.toggle('done');
+  calcLectureStudyTime();
+}
+
+function calcLectureStudyTime(): void {
+  const doneList = document.querySelectorAll('.done');
+  console.log(doneList);
+  doneList.forEach((element: HTMLElement) => {
+    lecTime += Number(
+      element.getElementsByClassName('lecture-time')[0].innerHTML
+    );
+    console.log(lecTime);
+  });
+  lectureStudyTime.innerText = Math.round(lecTime / speedOption).toString();
+  lecTime = 0;
   calcTotal();
+}
+
+/* 
+배속 조정
+*/
+let speedOption = 1;
+
+function changeSpeed() {
+  const selectedSpeed = $('.form-select') as HTMLSelectElement;
+  const optionIndex = selectedSpeed.options.selectedIndex;
+  const speed = Number(selectedSpeed.options[optionIndex].value);
+  speedOption = speed;
+  calcLectureStudyTime();
 }
 
 function calcTotal() {
   totalStudyTime.innerText = (
     Number(lectureStudyTime.innerText) + Number(addedStudyTime.innerText)
   ).toString();
+}
+
+if (screen.availWidth < 768) {
 }
