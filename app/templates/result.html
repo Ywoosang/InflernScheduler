@@ -1,16 +1,89 @@
-{% extends "bootstrap/base.html" %}
-{% block title %}InflearnScheduler > 결과{% endblock%}
-{% block content %}
- 
-{{ title }}
-{% for section in sections %}
-<ul>
-    <li>{{ section['name'] }}</li>
-    {% for content in section['contents'] %}
-    <li>{{ content['name']}}  : {{ content['time']}}</li>
-    {% endfor %} 
-</ul>
-{% endfor %}
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/result.css') }}">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
-
- 
+{% block content %}
+<section class="main">
+    <div class='hidden-url' style="position:absolute; color:transparent;">{{ url }}</div>
+    <!-- <article class="lecture-title">
+        <h2 class="lec-title">강좌명</h2>
+   </article> -->
+    <article class="calc">
+        
+        <div class="calc-content">
+            <a class="notice"><i class="fa fa-chevron-circle-down" style="margin-right: 5px; color: #f03a3a"></i>섹션 이름을
+                누르시면 전체 추가가 가능합니다.</a>
+        </div>
+        <div class="cc-2">
+            <a class="notice"><i class="fa fa-clock-o" style="margin-right: 5px;"></i> 예상 학습 시간 <a class="std-time-1" style="color:crimson;"> 0 </a>분</a>
+        </div>
+        <div class="cc-2">
+            <a class="notice"><i class="fa fa-clock-o" style="margin-right: 5px;"></i> 강의 수강 시간 <a class="std-time-2"  style="color:crimson;"> 0 </a>분</a>
+        </div>
+        <div class="cc-2">
+            <a class="notice"><i class="fa fa-clock-o" style="margin-right: 5px;"></i> 별도 학습 시간 <a class="std-time-3"  style="color:crimson;"> 0 </a>분</a>
+        </div>
+    </article>
+    <article class="practice">
+        <div class="practice-wrapper">
+            <div class="input-group mb-3 btn-p-first">
+                <input type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control add-input" aria-label="Recipient's username"
+                    aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary btn-mp add-btn" type="button" id="button-addon2"><a>실습시간 </a><i
+                        class="fa fa-plus"></i></button>
+            </div>
+            <div class="input-group mb-3 btn-p-first">
+                <input type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control sub-input" aria-label="Recipient's username"
+                    aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary btn-mp sub-btn" type="button" id="button-addon2"><a> 실습시간</a> <i
+                        class="fa fa-minus"></i></button>
+            </div>
+            <select class="form-select" aria-label="Default select example" style="height: 40px;" onchange="changeSpeed()">
+                <option value="1">X 1.0 배속</option>
+                <option value="1.25">X 1.25 배속</option>
+                <option value="1.5">X 1.5 배속</option>
+                <option value="1.75">X 1.75 배속</option>
+                <option value="2.0">X 2.0 배속</option>
+            </select>
+        </div>
+    </article>
+    <article class="contents-wrapper">
+        <div class="align-sections as-1">
+            <!--
+                            <ul>
+    <li class="title as-1"><i class="fa fa-list-alt"></i> 22222이 수업을 듣기 전 알면 좋은 한가지1</li>
+    <li class="content"><a class="content-name">이 수업을 듣기 전 알면 좋은 한가지 </a> <a class='content-length'>4분</a></li>
+    <li class="content"><a class="content-name">이 수업을 듣기 전 알면 좋은 한가지 </a> <a class='content-length'>4분</a></li>
+    <li class="content"><a class="content-name">이 수업을 듣기 전 알면 좋은 한가지 </a> <a class='content-length'>4분</a></li>
+    <li class="content"><a class="content-name">이 수업을 듣기 전 알면 좋은 한가지 </a> <a class='content-length'>4분</a></li>
+                            </ul>
+            -->
+        </div>
+        <div class="align-sections as-2">
+        </div>
+        <div class="align-sections as-3">
+        </div>
+    </article>
+    <article class="space">
+    </article>
+    <div class="server-modal hidden" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">존재하지 않는 강의 입니다. </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>URL 링크를 다시 한번 확인해주세요 </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="{{ url_for('static',filename='ts/src/result.js') }}"></script>
+{% endblock %}

@@ -1,27 +1,35 @@
-{% extends "bootstrap/base.html" %}
+{% extends "base.html" %}
 {% block head %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
 {% endblock %}
 {% block content %}
-<div class="form-group"> 
-<form method="POST">
-    {{ form.csrf_token }}
-        <!-- 오류 내용을 표시하도록 form.errors.item()  -->
-        {% for field,errors in form.errors.items() %}
-        <div class="alert alert-danger" role="alert">
-            <strong>{{form[field].label }}</strong> : {{ ', '.join(errors)}}
+<section class="main" style="height: 90vh;">
+    <article class="position-relative search">
+        <div class="form-group">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <!-- 오류 내용을 표시하도록 form.errors.item()  -->
+                {% for field,errors in form.errors.items() %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>{{ 'URL 형식으로 입력해 주세요' }}</strong> 
+                </div>
+                {% endfor %}
+                <div class="input-group mb-3 w-75 position-absolute top-50 start-50 translate-middle">
+                    <input type="text" class="form-control" placeholder="강의 URL" aria-label="Recipient's username"
+                        aria-describedby="button-addon2" name='url'>
+                    <button class="btn btn-outline-secondary search-btn" type="submit" id="button-addon2">강의 검색</button>
+                </div>
+            </form>
         </div>
-        {% endfor %}
-        <div class="col-lg-6">
-            <div class="input-group">
-                <input type="text" name='url' class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">Go!</button>
-                </span>
+    </article>
+    <article class="des">
+        <div class="des-container">
+            <h4>강의 URL 추출하는 방법 <a>인프런 > 내 강의실 > 강의 링크 복사</a></h4>
+            <div class="des-img-contain">
+                <img src='../static/img/guide.png' class="des-img">
             </div>
         </div>
-     
-</form>
-</div>
+    </article>
+</section>
 {% endblock %}
