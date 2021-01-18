@@ -1,0 +1,39 @@
+body{
+    margin : 0; 
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f7f7f7; 
+}
+li{
+    cursor: pointer;
+    list-style: none; 
+}
+a{
+    color: black; 
+    text-decoration: none; 
+}
+li>a{
+    pointer-events: none;
+}
+.hidden{
+    display: none;
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    font-weight: bold; 
+    background-color: #303740;
+    color: white;
+    text-align: center;
+}
+.total-content-select{
+    color:white;
+}
+.done {
+    background-color: rgba(116, 226, 158, 0.47) !important;
+}
+@media screen and (max-width:768px) {
+}
+@media screen and (max-width: 1024px) {
+}
